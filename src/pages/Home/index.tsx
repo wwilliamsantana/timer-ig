@@ -4,16 +4,13 @@ import * as zod from 'zod'
 import { differenceInSeconds } from 'date-fns'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  CountdownContainer,
-  FormContainer,
   HomeContainer,
-  MinutesInput,
-  Separator,
   StartCountdownButton,
   StopCountdownButton,
-  TaskInput,
 } from './styles'
 import { useEffect, useState } from 'react'
+import { NewCycleForm } from './components/NewCycleForm'
+import { Countdown } from './components/Countdown'
 
 const schemaValidation = zod.object({
   task: zod.string().min(1, 'Informe uma tarefa'),
@@ -95,6 +92,7 @@ export function Home() {
           new Date(),
           cycleActivated.startDate,
         )
+        console.log(secondsDifference)
 
         if (secondsDifference >= totalSeconds) {
           setCycles((state) =>
@@ -106,6 +104,7 @@ export function Home() {
           )
 
           clearInterval(interval)
+          setActiveCycle(null)
           setIsSecondsPassed(totalSeconds)
         } else {
           setIsSecondsPassed(secondsDifference)
@@ -121,36 +120,9 @@ export function Home() {
   return (
     <HomeContainer>
       <form onSubmit={handleSubmit(handleSubmitCountdown)}>
-        <FormContainer>
-          <label htmlFor="task">Vou trabalhar em</label>
-          <TaskInput
-            type="text"
-            id="task"
-            placeholder="Dê um nome para o seu projeto"
-            disabled={!!isActiveCycle}
-            {...register('task')}
-          />
+        <NewCycleForm />
+        <Countdown />
 
-          <label htmlFor="minutesAmout">durante</label>
-          <MinutesInput
-            type="number"
-            id="minutesAmout"
-            step={5}
-            max={60}
-            disabled={!!isActiveCycle}
-            min={1}
-            placeholder="00"
-            {...register('minutesAmout', { valueAsNumber: true })}
-          />
-          <span>minutos.</span>
-        </FormContainer>
-        <CountdownContainer>
-          <span>{minutes[0]}</span>
-          <span>{minutes[1]}</span>
-          <Separator>:</Separator>
-          <span>{seconds[0]}</span>
-          <span>{seconds[1]}</span>
-        </CountdownContainer>
         {isActiveCycle ? (
           <StopCountdownButton onClick={handleStopCountdown} type="button">
             <HandPalm size={24} />
