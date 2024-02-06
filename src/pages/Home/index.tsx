@@ -24,8 +24,9 @@ const schemaValidation = zod.object({
 type FormDataProps = zod.infer<typeof schemaValidation>
 
 export function Home() {
-  const { handleSubmitCountdown, isActiveCycle, interruptedButtonCountdown } =
+  const { createCountdown, isActiveCycle, interruptedButtonCountdown } =
     useContext(CycleContext)
+
   const hookForm = useForm<FormDataProps>({
     resolver: zodResolver(schemaValidation),
     defaultValues: {
@@ -34,13 +35,18 @@ export function Home() {
     },
   })
 
-  const { handleSubmit, watch } = hookForm
+  const { handleSubmit, watch, reset } = hookForm
+
+  function handleCreateCountdown(data: FormDataProps) {
+    createCountdown(data)
+    reset()
+  }
 
   const disabledButtonControl = watch('task')
 
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(handleSubmitCountdown)}>
+      <form onSubmit={handleSubmit(handleCreateCountdown)}>
         <FormProvider {...hookForm}>
           <NewCycleForm />
         </FormProvider>

@@ -21,7 +21,7 @@ interface CycleContextData {
   isActiveCycle: string | null
   isSecondsPassed: number
   setSecondsCurrentPassed: (value: number) => void
-  handleSubmitCountdown: (data: FormDataProps) => void
+  createCountdown: (data: FormDataProps) => void
   interruptedButtonCountdown: () => void
 }
 
@@ -39,7 +39,7 @@ export function CycleContextProvider({ children }: CycleContextProps) {
 
   const cycleActivated = cycles.find((cycle) => cycle.id === isActiveCycle)
 
-  function handleSubmitCountdown(data: FormDataProps) {
+  function createCountdown(data: FormDataProps) {
     const id = String(new Date().getTime())
     const cyclesCurrent: CyclesProps = {
       id,
@@ -90,7 +90,7 @@ export function CycleContextProvider({ children }: CycleContextProps) {
         isActiveCycle,
         isSecondsPassed,
         cycleActivated,
-        handleSubmitCountdown,
+        createCountdown,
         setSecondsCurrentPassed,
         interruptedButtonCountdown,
         currentFinishedCycles,
