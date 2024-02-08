@@ -78,6 +78,6 @@ export const Status = styled.span<StatusProps>`
     height: 0.5rem;
     border-radius: 9999px;
     background-color: ${(props) =>
-    props.theme[STATUS_COLOR[props.statusColor]]};
+      props.theme[STATUS_COLOR[props.statusColor]]};
   }
 `

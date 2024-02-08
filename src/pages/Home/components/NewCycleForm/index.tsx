@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import { CycleContext } from '../../../../context/CycleContext'
 
 export function NewCycleForm() {
-  const { isActiveCycle } = useContext(CycleContext)
+  const { idActiveCycle } = useContext(CycleContext)
   const { register } = useFormContext()
 
   return (
@@ -15,7 +15,7 @@ export function NewCycleForm() {
         type="text"
         id="task"
         placeholder="Dê um nome para o seu projeto"
-        disabled={!!isActiveCycle}
+        disabled={!!idActiveCycle}
         {...register('task')}
       />
 
@@ -25,8 +25,8 @@ export function NewCycleForm() {
         id="minutesAmout"
         step={5}
         max={60}
-        disabled={!!isActiveCycle}
-        min={5}
+        disabled={!!idActiveCycle}
+        min={1}
         placeholder="00"
         {...register('minutesAmout', { valueAsNumber: true })}
       />

@@ -17,14 +17,14 @@ const schemaValidation = zod.object({
   task: zod.string().min(1, 'Informe uma tarefa'),
   minutesAmout: zod
     .number()
-    .min(5, 'Valor mínimo é 5')
+    .min(1, 'Valor mínimo é 5')
     .max(60, 'O valor máximo é 60'),
 })
 
 type FormDataProps = zod.infer<typeof schemaValidation>
 
 export function Home() {
-  const { createCountdown, isActiveCycle, interruptedButtonCountdown } =
+  const { createCountdown, idActiveCycle, interruptedButtonCountdown } =
     useContext(CycleContext)
 
   const hookForm = useForm<FormDataProps>({
@@ -52,7 +52,7 @@ export function Home() {
         </FormProvider>
         <Countdown />
 
-        {isActiveCycle ? (
+        {idActiveCycle ? (
           <StopCountdownButton
             onClick={interruptedButtonCountdown}
             type="button"
