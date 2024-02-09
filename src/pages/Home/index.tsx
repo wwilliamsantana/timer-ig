@@ -17,7 +17,7 @@ const schemaValidation = zod.object({
   task: zod.string().min(1, 'Informe uma tarefa'),
   minutesAmout: zod
     .number()
-    .min(1, 'Valor mínimo é 5')
+    .min(5, 'Valor mínimo é 5')
     .max(60, 'O valor máximo é 60'),
 })
 

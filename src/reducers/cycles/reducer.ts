@@ -1,4 +1,5 @@
 import { ActionType, ActionsProps } from './action'
+import { produce } from 'immer'
 
 export interface CyclesProps {
   id: string
@@ -17,35 +18,39 @@ interface CycleStateProps {
 export function CycleReducer(state: CycleStateProps, action: ActionsProps) {
   switch (action.type) {
     case ActionType.ADD_NEW_CYCLE:
-      return {
-        ...state,
-        cycles: [...state.cycles, action.payload],
-        idActiveCycle: action.payload.id,
+      return produce(state, (draft) => {
+        draft.cycles.push(action.payload)
+        draft.idActiveCycle = action.payload.id
+      })
+
+    case ActionType.INTERRUPTED_COUNTDOWN: {
+      const currentCycleIndex = state.cycles.findIndex((cycle) => {
+        return cycle.id === state.idActiveCycle
+      })
+
+      if (currentCycleIndex < 0) {
+        return state
       }
-    case ActionType.INTERRUPTED_COUNTDOWN:
-      return {
-        ...state,
-        cycles: state.cycles.map((cycle) => {
-          if (cycle.id === state.idActiveCycle) {
-            return { ...cycle, interruptedDate: new Date() }
-          } else {
-            return cycle
-          }
-        }),
-        idActiveCycle: null,
+
+      return produce(state, (draft) => {
+        draft.idActiveCycle = null
+        draft.cycles[currentCycleIndex].interruptedDate = new Date()
+      })
+    }
+    case ActionType.MARK_CURRENT_SECONDS_FINISHED: {
+      const currentCycleIndex = state.cycles.findIndex((cycle) => {
+        return cycle.id === state.idActiveCycle
+      })
+
+      if (currentCycleIndex < 0) {
+        return state
       }
-    case ActionType.MARK_CURRENT_SECONDS_FINISHED:
-      return {
-        ...state,
-        cycles: state.cycles.map((cycle) => {
-          if (cycle.id === state.idActiveCycle) {
-            return { ...cycle, finishedDate: new Date() }
-          } else {
-            return cycle
-          }
-        }),
-        idActiveCycle: null,
-      }
+
+      return produce(state, (draft) => {
+        draft.idActiveCycle = null
+        draft.cycles[currentCycleIndex].finishedDate = new Date()
+      })
+    }
     default:
       return state
   }
