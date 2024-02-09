@@ -2,12 +2,10 @@ import { useContext } from 'react'
 import { HistoryContainer, HistoryList, Status } from './styles'
 import { CycleContext } from '../../context/CycleContext'
 import { formatDistanceToNow } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
+import { ptBR } from 'date-fns/locale'
 
 export function History() {
   const { cycles } = useContext(CycleContext)
-
-  console.log(cycles)
 
   return (
     <HistoryContainer>

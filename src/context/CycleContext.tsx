@@ -1,13 +1,17 @@
-import { ReactNode, createContext, useReducer, useState } from 'react'
-
-interface CyclesProps {
-  id: string
-  minuteAmout: number
-  task: string
-  startDate: Date
-  interruptedDate?: Date
-  finishedDate?: Date
-}
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
+import { CycleReducer, CyclesProps } from '../reducers/cycles/reducer'
+import {
+  createCountdownAction,
+  currentFinishedCyclesAction,
+  interruptedButtonCountdownAction,
+} from '../reducers/cycles/action'
+import { differenceInSeconds } from 'date-fns'
 
 interface FormDataProps {
   minutesAmout: number
@@ -29,61 +33,35 @@ interface CycleContextProps {
   children: ReactNode
 }
 
-interface CycleStateProps {
-  cycles: CyclesProps[]
-  idActiveCycle: string | null
-}
-
 export const CycleContext = createContext({} as CycleContextData)
 
 export function CycleContextProvider({ children }: CycleContextProps) {
   const [cycleState, dispatch] = useReducer(
-    (state: CycleStateProps, action: any) => {
-      switch (action.type) {
-        case 'ADD_NEW_CYCLE':
-          return {
-            ...state,
-            cycles: [...state.cycles, action.payload],
-            idActiveCycle: action.payload.id,
-          }
-        case 'INTERRUPTED_COUNTDOWN':
-          return {
-            ...state,
-            cycles: state.cycles.map((cycle) => {
-              if (cycle.id === state.idActiveCycle) {
-                return { ...cycle, interruptedDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-            idActiveCycle: null,
-          }
-        case 'MARK_CURRENT_SECONDS_FINISHED':
-          return {
-            ...state,
-            cycles: state.cycles.map((cycle) => {
-              if (cycle.id === state.idActiveCycle) {
-                return { ...cycle, finishedDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-            idActiveCycle: null,
-          }
-        default:
-          return state
-      }
-    },
+    CycleReducer,
     {
       cycles: [],
       idActiveCycle: null,
     },
+    (initialState) => {
+      const state = localStorage.getItem('@ignite:time-countdown')
+
+      if (state) {
+        return JSON.parse(state)
+      }
+
+      return initialState
+    },
   )
 
   const { cycles, idActiveCycle } = cycleState
-
-  const [isSecondsPassed, setIsSecondsPassed] = useState(0)
   const cycleActivated = cycles.find((cycle) => cycle.id === idActiveCycle)
+
+  const [isSecondsPassed, setIsSecondsPassed] = useState(() => {
+    if (cycleActivated) {
+      return differenceInSeconds(new Date(), cycleActivated.startDate)
+    }
+    return 0
+  })
 
   function createCountdown(data: FormDataProps) {
     const id = String(new Date().getTime())
@@ -94,10 +72,7 @@ export function CycleContextProvider({ children }: CycleContextProps) {
       startDate: new Date(),
     }
 
-    dispatch({
-      type: 'ADD_NEW_CYCLE',
-      payload: newCycle,
-    })
+    dispatch(createCountdownAction(newCycle))
 
     setIsSecondsPassed(0)
   }
@@ -107,16 +82,18 @@ export function CycleContextProvider({ children }: CycleContextProps) {
   }
 
   function interruptedButtonCountdown() {
-    dispatch({
-      type: 'INTERRUPTED_COUNTDOWN',
-    })
+    dispatch(interruptedButtonCountdownAction())
   }
 
   function currentFinishedCycles() {
-    dispatch({
-      type: 'MARK_CURRENT_SECONDS_FINISHED',
-    })
+    dispatch(currentFinishedCyclesAction())
   }
+
+  useEffect(() => {
+    const stateCycle = JSON.stringify(cycleState)
+
+    localStorage.setItem('@ignite:time-countdown', stateCycle)
+  }, [cycleState])
 
   return (
     <CycleContext.Provider
