@@ -6,7 +6,7 @@ import { HeaderContainer } from './styles'
 export function Header() {
   return (
     <HeaderContainer>
-      <img src={logoIgnite} />
+      <img src={logoIgnite} alt="" />
       <nav>
         <NavLink to={'/'} title="Página inicial">
           <Timer size={40} />
