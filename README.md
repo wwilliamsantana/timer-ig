@@ -1,30 +1,47 @@
-# React + TypeScript + Vite
+## Timer - Cronômetro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto criado a partir de um Layout disponibilizado pela Rocketseat. 
 
-Currently, two official plugins are available:
+### Sobre
+> Este projeto permite adicionar uma tarefa e especificar o tempo necessário para sua execução. Após iniciar o temporizador, a contagem regressiva começa. Há também um histórico que mostra todas as tarefas realizadas, indicando se foram concluídas, interrompidas ou estão em andamento, juntamente com informações sobre a data de início e o tempo decorrido desde a criação de cada tarefa.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologia usadas
 
-## Expanding the ESLint configuration
+- React.js
+- Styled-components
+- Date-fns
+- Context API  (React)
+- React-router-dom
+- React-hook form
+- Zod (Validação de dados inseridos)
+- TypeScript
+- Armazenamento de dados no localStorage
+- Eslint (Padronização de código)
+- Vite
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Execução do projeto
 
-- Configure the top-level `parserOptions` property like this:
+**Requer o NODE (npm) e o GIT instalado!**
+~~~javascript
+ 1. git clone https://github.com/wwilliamsantana/timer-ig.git
+ 2. cd .\timer-ig\
+ 3. npm install
+ 4. npm run dev
+ 5. entrar no link, disponilizado 
+~~~~
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Layout no figma.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+<img src="https://github.com/wwilliamsantana/timer-ig/assets/84254929/ffc80963-1671-4c66-b80d-1e56d0cd94ef" alt="" style="width: 60%;"/>
+<img src="https://github.com/wwilliamsantana/timer-ig/assets/84254929/1483eb58-d69b-40a5-a338-c7ea7e4f941c" alt="" style="width: 60%;"/>
+<img src="https://github.com/wwilliamsantana/timer-ig/assets/84254929/b092d89e-29d3-4896-b025-74a639b5f9cc" alt="" style="width: 60%;"/>
+
+
+
+
+## Aplicação construída 
+
+<img src="https://github.com/wwilliamsantana/timer-ig/assets/84254929/89aef13c-c55e-43e1-866d-fa31112f8215" alt="" style="width: 75%;"/>
+<img src="https://github.com/wwilliamsantana/timer-ig/assets/84254929/2682b14d-4c62-425e-b1c5-fcb48e1af129" alt="" style="width: 75%;"/>
+<img src="https://github.com/wwilliamsantana/timer-ig/assets/84254929/62b4d5c1-c5e0-46f3-a90d-69e636dd5227" alt="" style="width: 75%;"/>
+
